@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
-import * as fs from 'fs';
-import * as path from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -16,15 +16,24 @@ export class ProductController {
   async findOne(@Param('id') id: number): Promise<Product> {
     return this.productService.findOne(id);
   }
-
   @Post('create')
-  async create(@Body() body): Promise<Product> {
-    return this.productService.create(body);
+  @UseInterceptors(FileInterceptor("image"))
+  async create(@Body() body, @UploadedFile() file) {
+    console.log(body, file);
+    
+    // return "product";
+    // return body;
+    return await this.productService.create(body, file);
   }
 
-  @Post('update/:id')
-  async update(@Body() body, @Param('id') id: number): Promise<Product> {
-    return this.productService.update(id, body);
+  @Put('update/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
+    @Param('id') id: number,
+    @Body() body,
+    @UploadedFile() file?: Express.Multer.File,
+  ): Promise<Product> {
+    return this.productService.update(id, body, file);
   }
 
   @Delete('delete/:id')

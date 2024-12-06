@@ -21,14 +21,16 @@ const EditProductModal = ({
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
 
+  // Set default values when the modal opens
   useEffect(() => {
     setTitle(ProductTitle);
     setDescription(ProductDesc);
     setRating(ProductRating);
     setPrice(ProductPrice);
-    setImage(null); // Reset the image field
+    setImage(null);
   }, [ProductTitle, ProductDesc, ProductRating, ProductPrice]);
 
+  // Handle form submission
   async function onSubmit(e) {
     e.preventDefault();
 
@@ -38,31 +40,41 @@ const EditProductModal = ({
     formData.append("rating", rating);
     formData.append("price", price);
     if (image) {
-      formData.append("image", image); // Append the selected file
+      formData.append("image", image); // Add image only if it's provided
     }
 
-    const response = await fetch(
-      `http://localhost:8000/product/update/${ProductId}`,
-      {
-        method: "POST",
-        body: formData, // Use FormData for file upload
+    try {
+      const response = await fetch(
+        `http://localhost:8000/product/update/${ProductId}`, // Ensure the ID is correct
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        setError("Failed to update product");
+        return;
       }
-    );
 
-    if (!response.ok) {
-      setError("Failed to update product");
-      return;
+      const updatedProduct = await response.json();
+
+      setProducts((prev) =>
+        prev.map((product, index) =>
+          index === ProductIndex ? updatedProduct : product
+        )
+      );
+
+      onClose(); // Close the modal after update
+      resetForm(); // Reset form values
+    } catch (err) {
+      setError("An error occurred while updating the product");
+      console.error("Error:", err);
     }
+  }
 
-    const updatedProduct = await response.json();
-
-    setProducts((prev) =>
-      prev.map((product, index) =>
-        index === ProductIndex ? updatedProduct : product
-      )
-    );
-
-    onClose();
+  // Reset form fields
+  function resetForm() {
     setTitle("");
     setDescription("");
     setPrice("");
@@ -80,7 +92,7 @@ const EditProductModal = ({
           type="text"
           placeholder="Enter title"
           id="title"
-          className="border-black"
+          className="border-black text-black"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -88,7 +100,7 @@ const EditProductModal = ({
         <label htmlFor="description">Description</label>
         <textarea
           id="description"
-          className="border-black"
+          className="border-black text-black"
           placeholder="Enter Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -99,7 +111,7 @@ const EditProductModal = ({
           type="number"
           id="rating"
           placeholder="Enter rating"
-          className="border border-black p-2"
+          className="border text-black border-black p-2"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
@@ -109,7 +121,7 @@ const EditProductModal = ({
           type="number"
           id="price"
           placeholder="Enter price"
-          className="border border-black p-2"
+          className="border text-black border-black p-2"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -118,7 +130,7 @@ const EditProductModal = ({
         <input
           type="file"
           id="image"
-          className="border border-black p-2"
+          className="border  border-white p-2"
           onChange={(e) => setImage(e.target.files[0])}
         />
 

@@ -36,7 +36,7 @@ const Product_Card: React.FC<PropsType> = ({ id, img, title, desc, rating, price
             <div>
                 <Image 
                     className="w-full h-auto" 
-                    src={`/img`}
+                    src={img}
                     width={100}
                     height={200}
                     alt={title} 
