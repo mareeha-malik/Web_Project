@@ -1,23 +1,35 @@
 "use client";
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter from 'next/navigation'
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const router = useRouter(); // Initialize router from 'next/navigation'
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const[role, setRole] = useState("");
+    const router = useRouter();
 
-    const handleSignUp = (e: React.FormEvent) => {
+    const handleSignUp = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
-        // Here you can save the data to a JSON file or an API
-        // For example, you might want to push to an API or a JSON file
+        try {
+            const response = await fetch("http://localhost:8000/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, email, password,role }),
+            });
 
-        alert(`User Registered: ${username} - ${email}`);
-
-        // Redirect to home page after signup
-        router.push('/');
+            if (response.ok) {
+                alert("Signup successful!");
+                router.push("/"); // Redirect to login page
+            } else {
+                alert("User Already exists");
+            }
+        } catch (error) {
+            console.error("Error signing up:", error);
+        }
     };
 
     return (
@@ -68,10 +80,6 @@ const SignUpPage = () => {
                         Sign Up
                     </button>
                 </form>
-
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                    <a href="#" className="hover:underline">Already have an account? Login</a>
-                </div>
             </div>
         </div>
     );

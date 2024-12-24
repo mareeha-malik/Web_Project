@@ -31,9 +31,9 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/product/${id}`);
-        console.log("Full API Response:", response.data); // Log full response
+        console.log("Full API Response:", response.data);
 
-        setProduct(response.data); // Assuming the backend returns product details here
+        setProduct(response.data);
       } catch (err: any) {
         setError(err.response?.data?.message || "Failed to fetch product");
       } finally {
