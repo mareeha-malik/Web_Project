@@ -48,8 +48,8 @@ export class AuthController {
     return this.authService.signup(body.username, body.email, body.password);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('protected')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async protectedRoute() {
     return { message: 'You have access to this protected route!' };

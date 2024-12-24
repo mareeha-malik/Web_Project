@@ -20,13 +20,13 @@ import { JwtAuthGuard } from './jwt-auth.guard';
     AuthService,
     JwtStrategy,
     RolesGuard,
-    JwtAuthGuard,
-    {
-      provide: APP_GUARD, // Global Guard ke liye
-      useClass: RolesGuard, // Use RolesGuard globally for all routes that need to check user roles
-    },
+    // JwtAuthGuard,
+    // {
+    //   provide: APP_GUARD, // Global Guard ke liye
+    //   useClass: RolesGuard, // Use RolesGuard globally for all routes that need to check user roles
+    // },
   ],
   controllers: [AuthController],
   exports: [JwtModule, AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }

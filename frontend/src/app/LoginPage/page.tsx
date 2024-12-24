@@ -15,6 +15,7 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // "Authorization": `Bearer `
         },
         body: JSON.stringify({ email, password }),
       });
