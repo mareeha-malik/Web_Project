@@ -31,16 +31,14 @@ export class JwtAuthGuard implements CanActivate {
     }
   }
   private extractTokenFromHeader(request: any): string | null {
-    // const authHeader = request.headers['authorization'];
-    // if (!authHeader) {
-    //   console.error('Authorization header missing');
-    //   return null;
-    // }
-    // console.log('Authorization header:', authHeader); 
+    const authHeader = request.headers['authorization'];
+    if (!authHeader) {
+      console.error('Authorization header missing');
+      return null;
+    }
+    console.log('Authorization header:', authHeader); 
   
-    // const token = authHeader.split(' ')[1]; 
-    const token = localStorage.getItem('access_token');
-
+    const token = authHeader.split(' ')[1]; 
     console.log('Extracted Token:', token);
     return token || null;
   }
