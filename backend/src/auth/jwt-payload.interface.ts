@@ -3,5 +3,6 @@ export interface JwtPayload {
     role: string;
     email: string;
     id: number;
+    // token: string;
   }
   

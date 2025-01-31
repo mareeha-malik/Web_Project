@@ -62,18 +62,15 @@ const HeaderMain = () => {
         <div className="hidden lg:flex gap-4 items-center text-gray-50 text-[25px]">
           {/* Heart Icon with Notification Badge */}
           <div className="relative">
-            <FaRegHeart />
+            {/* <FaRegHeart />
             <div className="bg-BrightOrange rounded-full absolute top-0 right-0 w-[15px] h-[15px] text-[10px] text-white grid place-items-center translate-x-1 -translate-y-1">
-              {/* Likes count */}
-            </div>
+              Likes count */}
+            {/* </div> */}
           </div>
 
           {/* Shopping Bag Icon with Badge */}
           <div className="relative">
-            <HiOutlineShoppingBag />
-            <div className="bg-BrightOrange rounded-full absolute top-0 right-0 w-[15px] h-[15px] text-[10px] text-white grid place-items-center translate-x-1 -translate-y-1">
-              0
-            </div>
+           
           </div>
 
           {/* Display username and Logout button */}

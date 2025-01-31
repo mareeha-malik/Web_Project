@@ -7,31 +7,40 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (e: { preventDefault: () => void; }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": `Bearer `
         },
         body: JSON.stringify({ email, password }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful, token:", data.token); // Log the successful response
+        console.log("Login response data:", data);
+
         localStorage.setItem("access_token", data.token);
-        localStorage.setItem("username", data.username);  // Store username
-        localStorage.setItem("role", data.role);  // Store user role
-  
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("role", data.role);
+        console.log(data.role);
+
         alert("Login successful!");
-        router.push("/");  // Redirect to homepage after login
+
+        // Check user role and redirect accordingly
+        if (data.role === "admin") {
+          console.log("Admin role detected. Redirecting to /Admin...");
+          await router.push("/Admin"); // Admin page
+        } else {
+          console.log("Non-admin role detected. Redirecting to /...");
+          await router.push("/"); // Home page
+        }
       } else {
         const errorData = await response.json();
-        console.error("Login error response:", errorData); // Log the error details
+        console.error("Login error response:", errorData);
         alert("Invalid email or password");
       }
     } catch (error) {
@@ -39,7 +48,6 @@ const LoginPage = () => {
       alert(`An error occurred while logging in: ${(error as { message: string }).message}`);
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
@@ -76,6 +84,12 @@ const LoginPage = () => {
           >
             Login
           </button>
+          <div className="text-gray-700">
+            Don't have an account?{" "}
+            <a href="/SignUp" className="text-orange-500 hover:underline">
+              Sign Up
+            </a>
+          </div>
         </form>
       </div>
     </div>
