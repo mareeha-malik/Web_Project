@@ -12,4 +12,8 @@
         "dest": "src/main.js",
         "methods": ["GET", "POST"]
     }
-]}
+],
+"rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
