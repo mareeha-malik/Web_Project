@@ -6,14 +6,12 @@
         "use": "@vercel/node"
     }
 ],
-"routes": [
     {
-        "src": "/(.*)",
-        "dest": "src/main.js",
-        "methods": ["GET", "POST"]
+  "routes": [
+    {
+      "src": "/src/main.js",
+      "dest": "/src/main.js",
+      "methods": ["GET", "POST"]
     }
-],
-"rewrites": [
-    { "source": "/(.*)", "destination": "/" }
   ]
 }
